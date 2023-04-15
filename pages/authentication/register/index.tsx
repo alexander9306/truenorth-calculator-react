@@ -2,7 +2,6 @@ import type { ReactElement } from 'react';
 import { Grid, Box, Card, Typography, Stack } from '@mui/material';
 import Link from 'next/link';
 import PageContainer from '../../../src/components/container/PageContainer';
-import Logo from '../../../src/layouts/full/shared/logo/Logo';
 import AuthRegister from '../auth/AuthRegister';
 import BlankLayout from '../../../src/layouts/blank/BlankLayout';
 

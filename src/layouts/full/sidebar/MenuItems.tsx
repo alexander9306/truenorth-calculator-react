@@ -1,21 +1,19 @@
 import { IconTable, IconCalculator } from '@tabler/icons-react';
 
-import { uniqueId } from 'lodash';
-
 const Menuitems = [
   {
     navlabel: true,
     subheader: 'Home',
   },
   {
-    id: uniqueId(),
+    id: 1,
     title: 'Operation',
     icon: IconCalculator,
     href: '/',
   },
 
   {
-    id: uniqueId(),
+    id: 2,
     title: 'Records',
     icon: IconTable,
     href: '/records',
