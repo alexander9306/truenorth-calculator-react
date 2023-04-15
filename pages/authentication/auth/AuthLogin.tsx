@@ -98,7 +98,7 @@ const AuthLogin = ({ title, subtitle, subtext }: loginType) => {
           </Box>
         </Stack>
 
-        <Box pt={4}>
+        <Box pt={4} textAlign="end">
           <Button
             color="primary"
             variant="contained"

@@ -4,7 +4,6 @@ import {
   Drawer,
   Typography,
 } from '@mui/material';
-import Logo from '../shared/logo/Logo';
 import SidebarItems from './SidebarItems';
 
 interface ItemType {
@@ -88,8 +87,8 @@ const Sidebar = ({
       {/* ------------------------------------------- */}
       {/* Logo */}
       {/* ------------------------------------------- */}
-      <Box px={2}>
-        <Logo />
+      <Box px={2} py={2}>
+        <Typography variant="h2">Calculator App</Typography>
       </Box>
       {/* ------------------------------------------- */}
       {/* Sidebar For Mobile */}

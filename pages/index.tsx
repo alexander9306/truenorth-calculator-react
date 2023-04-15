@@ -3,12 +3,9 @@ import { Grid, Box } from '@mui/material';
 import PageContainer from '../src/components/container/PageContainer';
 
 // components
-import SalesOverview from '../src/components/dashboard/SalesOverview';
-import YearlyBreakup from '../src/components/dashboard/YearlyBreakup';
-import RecentTransactions from '../src/components/dashboard/RecentTransactions';
-import ProductPerformance from '../src/components/dashboard/ProductPerformance';
-import Blog from '../src/components/dashboard/Blog';
-import MonthlyEarnings from '../src/components/dashboard/MonthlyEarnings';
+import OperationForm from '../src/components/dashboard/OperationForm';
+import CurrentBalance from '../src/components/dashboard/CurrentBalance';
+import Result from '../src/components/dashboard/Result';
 import FullLayout from '../src/layouts/full/FullLayout';
 
 export default function Home() {
@@ -17,15 +14,15 @@ export default function Home() {
       <Box>
         <Grid container spacing={3}>
           <Grid item xs={12} lg={8}>
-            <SalesOverview />
+            <OperationForm />
           </Grid>
           <Grid item xs={12} lg={4}>
             <Grid container spacing={3}>
               <Grid item xs={12}>
-                <YearlyBreakup />
+                <Result result="" />
               </Grid>
               <Grid item xs={12}>
-                <MonthlyEarnings />
+                <CurrentBalance />
               </Grid>
             </Grid>
           </Grid>

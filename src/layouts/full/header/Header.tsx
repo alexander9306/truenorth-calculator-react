@@ -13,16 +13,13 @@ import PropTypes from 'prop-types';
 
 // components
 import Profile from './Profile';
-import { IconBellRinging, IconMenu } from '@tabler/icons-react';
+import { IconMenu } from '@tabler/icons-react';
 
 interface ItemType {
   toggleMobileSidebar: (event: React.MouseEvent<HTMLElement>) => void;
 }
 
 const Header = ({ toggleMobileSidebar }: ItemType) => {
-  // const lgUp = useMediaQuery((theme) => theme.breakpoints.up('lg'));
-  // const lgDown = useMediaQuery((theme) => theme.breakpoints.down('lg'));
-
   const AppBarStyled = styled(AppBar)(({ theme }) => ({
     boxShadow: 'none',
     background: theme.palette.background.paper,
@@ -60,11 +57,7 @@ const Header = ({ toggleMobileSidebar }: ItemType) => {
           color="inherit"
           aria-controls="msgs-menu"
           aria-haspopup="true"
-        >
-          <Badge variant="dot" color="primary">
-            <IconBellRinging size="21" stroke="1.5" />
-          </Badge>
-        </IconButton>
+        ></IconButton>
         <Box flexGrow={1} />
         <Stack spacing={1} direction="row" alignItems="center">
           <Profile />
