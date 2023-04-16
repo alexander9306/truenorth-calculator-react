@@ -1,9 +1,9 @@
 import type { ReactElement } from 'react';
 import { Grid, Box, Card, Typography, Stack } from '@mui/material';
 import Link from 'next/link';
-import PageContainer from '../../../src/components/container/PageContainer';
-import AuthRegister from '../auth/AuthRegister';
-import BlankLayout from '../../../src/layouts/blank/BlankLayout';
+import PageContainer from '../../src/components/container/PageContainer';
+import AuthRegister from '../../src/components/auth/AuthRegister';
+import BlankLayout from '../../src/layouts/blank/BlankLayout';
 
 const Register2 = () => (
   <PageContainer title="Register" description="this is Register page">

@@ -1,11 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Box, Typography, Button, Stack } from '@mui/material';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
-import CustomTextField from '../../../src/components/forms/theme-elements/CustomTextField';
+import CustomTextField from '../forms/theme-elements/CustomTextField';
+import { signIn } from 'next-auth/react';
+import { useRouter } from 'next/router';
 
-interface loginType {
+interface AuthLoginProps {
   title?: string;
   subtitle?: JSX.Element | JSX.Element[];
   subtext?: JSX.Element | JSX.Element[];
@@ -19,15 +21,28 @@ const validationSchema = yup.object({
   password: yup.string().required('Password is required'),
 });
 
-const AuthLogin = ({ title, subtitle, subtext }: loginType) => {
+const AuthLogin = ({ title, subtitle, subtext }: AuthLoginProps) => {
+  const router = useRouter();
+  const [apiError, setApiError] = useState<string>();
+
   const formik = useFormik({
     initialValues: {
       username: '',
       password: '',
     },
     validationSchema: validationSchema,
-    onSubmit: (values) => {
-      alert(JSON.stringify(values, null, 2));
+    onSubmit: async ({ username, password }) => {
+      const res = await signIn('credentials', {
+        username,
+        password,
+        redirect: false,
+      });
+
+      if (res?.ok) {
+        router.push('/');
+      } else {
+        setApiError(res?.error);
+      }
     },
   });
 
@@ -97,6 +112,15 @@ const AuthLogin = ({ title, subtitle, subtext }: loginType) => {
             />
           </Box>
         </Stack>
+
+        <Typography
+          variant="subtitle1"
+          color="red"
+          mt="5px"
+          component="span"
+        >
+          {apiError}
+        </Typography>
 
         <Box pt={4} textAlign="end">
           <Button

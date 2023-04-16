@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { Avatar, Box, Menu, Button, IconButton } from '@mui/material';
+import { signOut } from 'next-auth/react';
 
 const Profile = () => {
   const [anchorEl2, setAnchorEl2] = useState(null);
@@ -54,11 +55,10 @@ const Profile = () => {
       >
         <Box mt={1} py={1} px={2}>
           <Button
-            href="/authentication/login"
             variant="outlined"
             color="primary"
-            component={Link}
             fullWidth
+            onClick={() => signOut()}
           >
             Logout
           </Button>

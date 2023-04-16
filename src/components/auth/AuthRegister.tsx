@@ -3,7 +3,7 @@ import { Box, Typography, Button } from '@mui/material';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
-import CustomTextField from '../../../src/components/forms/theme-elements/CustomTextField';
+import CustomTextField from '../forms/theme-elements/CustomTextField';
 import { Stack } from '@mui/system';
 
 interface registerType {
