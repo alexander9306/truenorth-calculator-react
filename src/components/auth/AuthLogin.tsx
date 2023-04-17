@@ -72,6 +72,7 @@ const AuthLogin = ({ title, subtitle, subtext }: AuthLoginProps) => {
               variant="outlined"
               name="username"
               id="username"
+              autoComplete="off"
               fullWidth
               value={formik.values.username}
               onChange={formik.handleChange}

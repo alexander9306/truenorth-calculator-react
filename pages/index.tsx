@@ -1,4 +1,4 @@
-import type { ReactElement } from 'react';
+import { ReactElement, useEffect } from 'react';
 import { Grid, Box } from '@mui/material';
 import PageContainer from '../src/components/container/PageContainer';
 
@@ -7,6 +7,7 @@ import OperationForm from '../src/components/dashboard/OperationForm';
 import CurrentBalance from '../src/components/dashboard/CurrentBalance';
 import Result from '../src/components/dashboard/Result';
 import FullLayout from '../src/layouts/full/FullLayout';
+import { useSession } from 'next-auth/react';
 
 export default function Home() {
   return (

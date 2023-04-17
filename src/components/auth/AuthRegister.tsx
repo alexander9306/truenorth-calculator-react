@@ -1,10 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Box, Typography, Button } from '@mui/material';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
 import CustomTextField from '../forms/theme-elements/CustomTextField';
 import { Stack } from '@mui/system';
+import { useRouter } from 'next/router';
+import { useFetch } from '../../../lib/useFetch';
+import { FetcherProps } from '../../../lib/fetcher';
 
 interface registerType {
   title?: string;
@@ -21,10 +24,16 @@ const validationSchema = yup.object({
   passwordConfirmation: yup
     .string()
     .oneOf([yup.ref('password')], 'Passwords must match')
-    .required('Confirm Password is required'),
+    .required('Password confirmation is required'),
 });
 
 const AuthRegister = ({ title, subtitle, subtext }: registerType) => {
+  const router = useRouter();
+  const [fetcherOptions, setFetcherOptions] =
+    useState<FetcherProps | null>(null);
+
+  const { data, error } = useFetch(fetcherOptions);
+
   const formik = useFormik({
     initialValues: {
       username: '',
@@ -32,10 +41,21 @@ const AuthRegister = ({ title, subtitle, subtext }: registerType) => {
       passwordConfirmation: '',
     },
     validationSchema: validationSchema,
-    onSubmit: (values) => {
-      alert(JSON.stringify(values, null, 2));
+    onSubmit: ({ username, password }) => {
+      const baseUrl =
+        process.env.NEXT_API_URL || 'http://localhost:3002';
+
+      setFetcherOptions({
+        url: `${baseUrl}/v1/auth/signup`,
+        method: 'POST',
+        body: JSON.stringify({ username, password }),
+      });
     },
   });
+
+  if (data) {
+    router.push('/authentication/login');
+  }
 
   return (
     <>
@@ -110,7 +130,7 @@ const AuthRegister = ({ title, subtitle, subtext }: registerType) => {
               mb="5px"
               mt="25px"
             >
-              Confirm Password
+              Password confirmation
             </Typography>
             <CustomTextField
               id="passwordConfirmation"
@@ -130,6 +150,15 @@ const AuthRegister = ({ title, subtitle, subtext }: registerType) => {
               }
             />
           </Stack>
+          <Typography
+            variant="subtitle1"
+            color="red"
+            mt="5px"
+            component="span"
+          >
+            {!!error && error.message}
+          </Typography>
+
           <Button
             color="primary"
             variant="contained"

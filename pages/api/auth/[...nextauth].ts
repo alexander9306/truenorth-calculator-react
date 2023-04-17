@@ -1,9 +1,18 @@
 import NextAuth from 'next-auth';
+import { JWT } from 'next-auth/jwt';
 import CredentialsProvider from 'next-auth/providers/credentials';
 
 export default NextAuth({
   callbacks: {
-    session({ session, token }) {
+    async jwt({ token, user }: { token: JWT; user: any }) {
+      // Persist the OAuth access_token to the token right after signin
+      if (user?.access_token) {
+        token.accessToken = user.access_token;
+      }
+      return token;
+    },
+    async session({ session, token }: { session: any; token: JWT }) {
+      session.accessToken = token.accessToken;
       return session; // The return type will match the one returned in `useSession()`
     },
   },
@@ -43,13 +52,16 @@ export default NextAuth({
           throw new Error(error.message);
         }
 
-        return res.json();
+        const { user, access_token } = await res.json();
+
+        return {
+          id: user.id,
+          email: user.username,
+          access_token,
+        };
       },
     }),
   ],
-  session: {
-    strategy: 'jwt',
-  },
   pages: {
     signIn: '/authentication/login',
     signOut: '/authentication/login',
