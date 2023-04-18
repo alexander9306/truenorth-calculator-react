@@ -19,7 +19,7 @@ const SidebarItems = ({ toggleMobileSidebar }: any) => {
           } else {
             return (
               <NavItem
-                item={item}
+                item={item as any}
                 key={item.id}
                 pathDirect={pathDirect}
                 onClick={toggleMobileSidebar}

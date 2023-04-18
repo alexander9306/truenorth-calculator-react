@@ -6,8 +6,8 @@ import OperationRecord from '../../components/operations/OperationRecord';
 const Records = () => {
   return (
     <PageContainer
-      title="Records"
-      description="Records of operations"
+      title="Operations record"
+      description="Record of all operations"
     >
       <OperationRecord />
     </PageContainer>

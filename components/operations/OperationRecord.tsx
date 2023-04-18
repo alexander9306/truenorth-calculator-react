@@ -8,7 +8,7 @@ import { debounce } from 'lodash';
 const OperationRecord = () => {
   const initialState = {
     pageNumber: 1,
-    pageSize: 10,
+    pageSize: 8,
     sortField: 'date',
     sortDirection: 'DESC',
     filterValue: '',
@@ -60,7 +60,7 @@ const OperationRecord = () => {
 
   return (
     <DashboardCard
-      title="Record of Operations"
+      title="Operations record"
       action={
         <FilterTable
           handleFilterChange={handleFilterChange}

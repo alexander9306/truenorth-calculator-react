@@ -41,7 +41,7 @@ const RecordsTable = (props: RecordsTableProps) => {
       sx={{
         overflow: 'auto',
         width: { xs: '280px', sm: 'auto' },
-        height: '700px',
+        height: '600px',
         position: 'relative',
       }}
     >
@@ -157,9 +157,8 @@ const RecordsTable = (props: RecordsTableProps) => {
       </Table>
       <Box
         textAlign="right"
-        mt={3}
+        mt={4}
         sx={{
-          position: 'absolute',
           float: 'right',
           right: '0',
           bottom: '20px',
