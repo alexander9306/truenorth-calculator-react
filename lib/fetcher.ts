@@ -1,3 +1,5 @@
+import { signOut } from 'next-auth/react';
+
 export type FetcherProps = {
   url: string;
   method?: 'POST' | 'GET' | 'PUT' | 'PATCH' | 'DELETE';
@@ -8,8 +10,9 @@ export type FetcherProps = {
 type FetchRequestInit = Parameters<typeof fetch>[1];
 
 export const fetcher = async (req: FetcherProps) => {
-  console.log('Fetch started');
-  const url = req.url;
+  const baseUrl = process.env.NEXT_API_URL || 'http://localhost:3002';
+
+  const url = baseUrl + req.url;
 
   const fetchOptions: FetchRequestInit = {
     method: 'GET',
@@ -25,9 +28,16 @@ export const fetcher = async (req: FetcherProps) => {
   const res = await fetch(url, fetchOptions);
 
   if (!res.ok) {
+    if (res.status === 401) {
+      await signOut();
+      return;
+    }
+
     const error = await res.json();
     throw new Error(error.message);
   }
 
-  return res.json();
+  const result = await res.json();
+  console.log('result', result);
+  return result;
 };

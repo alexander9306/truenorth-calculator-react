@@ -12,10 +12,11 @@ const CustomTextField = styled<typeof TextField>((props: any) => (
   '& .MuiOutlinedInput-input.Mui-disabled::-webkit-input-placeholder':
     {
       color: theme.palette.text.secondary,
-      opacity: '1',
+      opacity: '20',
     },
   '& .Mui-disabled .MuiOutlinedInput-notchedOutline': {
-    borderColor: theme.palette.grey[200],
+    borderColor: theme.palette.grey[100],
+    backgroundColor: theme.palette.grey[100],
   },
 }));
 

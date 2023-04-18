@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { Box, Typography, Button, Stack } from '@mui/material';
+import { Box, Typography, Stack } from '@mui/material';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
 import CustomTextField from '../forms/theme-elements/CustomTextField';
 import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/router';
+import { LoadingButton } from '@mui/lab';
 
 interface AuthLoginProps {
   title?: string;
@@ -23,6 +24,7 @@ const validationSchema = yup.object({
 
 const AuthLogin = ({ title, subtitle, subtext }: AuthLoginProps) => {
   const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
   const [apiError, setApiError] = useState<string>();
 
   const formik = useFormik({
@@ -32,12 +34,14 @@ const AuthLogin = ({ title, subtitle, subtext }: AuthLoginProps) => {
     },
     validationSchema: validationSchema,
     onSubmit: async ({ username, password }) => {
+      setIsLoading(true);
       const res = await signIn('credentials', {
         username,
         password,
         redirect: false,
       });
 
+      setIsLoading(false);
       if (res?.ok) {
         router.push('/');
       } else {
@@ -122,9 +126,10 @@ const AuthLogin = ({ title, subtitle, subtext }: AuthLoginProps) => {
         >
           {apiError}
         </Typography>
-
         <Box pt={4} textAlign="end">
-          <Button
+          <LoadingButton
+            loading={isLoading}
+            loadingIndicator="Loading…"
             color="primary"
             variant="contained"
             size="large"
@@ -132,7 +137,7 @@ const AuthLogin = ({ title, subtitle, subtext }: AuthLoginProps) => {
             type="submit"
           >
             Sign In
-          </Button>
+          </LoadingButton>
         </Box>
       </form>
       {subtitle}

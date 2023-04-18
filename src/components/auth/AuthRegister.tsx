@@ -8,6 +8,7 @@ import { Stack } from '@mui/system';
 import { useRouter } from 'next/router';
 import { useFetch } from '../../../lib/useFetch';
 import { FetcherProps } from '../../../lib/fetcher';
+import { LoadingButton } from '@mui/lab';
 
 interface registerType {
   title?: string;
@@ -32,8 +33,6 @@ const AuthRegister = ({ title, subtitle, subtext }: registerType) => {
   const [fetcherOptions, setFetcherOptions] =
     useState<FetcherProps | null>(null);
 
-  const { data, error } = useFetch(fetcherOptions);
-
   const formik = useFormik({
     initialValues: {
       username: '',
@@ -42,16 +41,15 @@ const AuthRegister = ({ title, subtitle, subtext }: registerType) => {
     },
     validationSchema: validationSchema,
     onSubmit: ({ username, password }) => {
-      const baseUrl =
-        process.env.NEXT_API_URL || 'http://localhost:3002';
-
       setFetcherOptions({
-        url: `${baseUrl}/v1/auth/signup`,
+        url: 'v1/auth/signup',
         method: 'POST',
         body: JSON.stringify({ username, password }),
       });
     },
   });
+
+  const { data, error, isLoading } = useFetch(fetcherOptions);
 
   if (data) {
     router.push('/authentication/login');
@@ -159,7 +157,9 @@ const AuthRegister = ({ title, subtitle, subtext }: registerType) => {
             {!!error && error.message}
           </Typography>
 
-          <Button
+          <LoadingButton
+            loading={isLoading}
+            loadingIndicator="Loading..."
             color="primary"
             variant="contained"
             size="large"
@@ -167,7 +167,7 @@ const AuthRegister = ({ title, subtitle, subtext }: registerType) => {
             fullWidth
           >
             Sign Up
-          </Button>
+          </LoadingButton>
         </form>
       </Box>
       {subtitle}
