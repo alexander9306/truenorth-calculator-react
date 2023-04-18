@@ -6,8 +6,6 @@ import {
   styled,
   Stack,
   IconButton,
-  Badge,
-  Button,
 } from '@mui/material';
 import PropTypes from 'prop-types';
 

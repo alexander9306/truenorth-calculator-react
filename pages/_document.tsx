@@ -1,8 +1,13 @@
 import * as React from 'react';
-import Document, { Html, Head, Main, NextScript } from 'next/document';
+import Document, {
+  Html,
+  Head,
+  Main,
+  NextScript,
+} from 'next/document';
 import createEmotionServer from '@emotion/server/create-instance';
-import theme, { roboto } from '../src/theme';
-import createEmotionCache from '../src/createEmotionCache';
+import theme, { roboto } from '@/theme';
+import createEmotionCache from '@/createEmotionCache';
 
 export default class MyDocument extends Document {
   render() {
@@ -10,7 +15,10 @@ export default class MyDocument extends Document {
       <Html lang="en" className={roboto.className}>
         <Head>
           {/* PWA primary color */}
-          <meta name="theme-color" content={theme.palette.primary.main} />
+          <meta
+            name="theme-color"
+            content={theme.palette.primary.main}
+          />
           <link rel="shortcut icon" href="/favicon.ico" />
           <link
             href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"

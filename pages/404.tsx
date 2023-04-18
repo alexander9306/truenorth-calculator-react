@@ -2,7 +2,7 @@ import type { ReactElement } from 'react';
 import { Box, Container, Typography, Button } from '@mui/material';
 import Link from 'next/link';
 import Image from 'next/image';
-import BlankLayout from '../src/layouts/blank/BlankLayout';
+import BlankLayout from '../components/layouts/blank/BlankLayout';
 import errorImage from '../public/images/backgrounds/404-error-idea.gif';
 
 const Error = () => (

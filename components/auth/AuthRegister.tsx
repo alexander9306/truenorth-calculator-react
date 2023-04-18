@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
-import { Box, Typography, Button } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
-import CustomTextField from '../forms/theme-elements/CustomTextField';
+import CustomTextField from '../theme-elements/CustomTextField';
 import { Stack } from '@mui/system';
 import { useRouter } from 'next/router';
-import { useFetch } from '../../../lib/useFetch';
-import { FetcherProps } from '../../../lib/fetcher';
+import { useFetch } from '../../lib/useFetch';
+import { FetcherProps } from '../../lib/fetcher';
 import { LoadingButton } from '@mui/lab';
 
 interface registerType {
@@ -42,7 +42,7 @@ const AuthRegister = ({ title, subtitle, subtext }: registerType) => {
     validationSchema: validationSchema,
     onSubmit: ({ username, password }) => {
       setFetcherOptions({
-        url: 'v1/auth/signup',
+        url: '/v1/auth/signup',
         method: 'POST',
         body: JSON.stringify({ username, password }),
       });

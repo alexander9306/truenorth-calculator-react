@@ -7,9 +7,9 @@ import { useTheme } from '@mui/material/styles';
 import { Grid, Typography } from '@mui/material';
 
 import DashboardCard from '../shared/DashboardCard';
-import getCurrentBalanceChartOptions from './getCurrentBalanceChartOptions';
-import { useFetch } from '../../../lib/useFetch';
-import { Balance } from '../../../interfaces/balance.interface';
+import getCurrentBalanceChartOptions from '../../lib/getCurrentBalanceChartOptions';
+import { useFetch } from '../../lib/useFetch';
+import { Balance } from '../../interfaces/balance.interface';
 import Loading from '../shared/Loading';
 
 const CurrentBalance = () => {

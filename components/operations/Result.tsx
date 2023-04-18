@@ -3,7 +3,7 @@ import { Box, Typography } from '@mui/material';
 import DashboardCard from '../shared/DashboardCard';
 
 interface ResultProps {
-  result: string;
+  result?: string;
 }
 
 const Result = ({ result }: ResultProps) => {

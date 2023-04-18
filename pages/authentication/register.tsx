@@ -1,11 +1,11 @@
 import { ReactElement } from 'react';
 import { Grid, Box, Card, Typography, Stack } from '@mui/material';
 import Link from 'next/link';
-import PageContainer from '../../src/components/container/PageContainer';
-import AuthRegister from '../../src/components/auth/AuthRegister';
-import BlankLayout from '../../src/layouts/blank/BlankLayout';
+import PageContainer from '../../components/container/PageContainer';
+import AuthRegister from '../../components/auth/AuthRegister';
+import BlankLayout from '../../components/layouts/blank/BlankLayout';
 
-const Register2 = () => {
+const Register = () => {
   return (
     <PageContainer
       title="Register"
@@ -97,8 +97,8 @@ const Register2 = () => {
   );
 };
 
-export default Register2;
+export default Register;
 
-Register2.getLayout = function getLayout(page: ReactElement) {
+Register.getLayout = function getLayout(page: ReactElement) {
   return <BlankLayout>{page}</BlankLayout>;
 };

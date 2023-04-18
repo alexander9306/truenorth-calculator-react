@@ -3,7 +3,7 @@ import { Box, Typography, Stack } from '@mui/material';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
-import CustomTextField from '../forms/theme-elements/CustomTextField';
+import CustomTextField from '../theme-elements/CustomTextField';
 import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import { LoadingButton } from '@mui/lab';

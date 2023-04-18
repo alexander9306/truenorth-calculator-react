@@ -13,10 +13,10 @@ import {
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import DashboardCard from '../shared/DashboardCard';
-import CustomTextField from '../forms/theme-elements/CustomTextField';
-import { Operation } from '../../../interfaces/operation.interface';
-import { useFetch } from '../../../lib/useFetch';
-import { CollectionResponse } from '../../../interfaces/collections-response.interface';
+import CustomTextField from '../theme-elements/CustomTextField';
+import { Operation } from '../../interfaces/operation.interface';
+import { useFetch } from '../../lib/useFetch';
+import { CollectionResponse } from '../../interfaces/collections-response.interface';
 
 const validationSchema = yup.object({
   type: yup.string().required('Type is required'),

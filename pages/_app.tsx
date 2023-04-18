@@ -7,8 +7,8 @@ import { AppProps } from 'next/app';
 import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import { CacheProvider, EmotionCache } from '@emotion/react';
-import createEmotionCache from '../src/createEmotionCache';
-import { baseLightTheme as theme } from '../src/theme/DefaultColors';
+import createEmotionCache from '@/createEmotionCache';
+import { baseLightTheme as theme } from '@/theme/DefaultColors';
 
 type NextPageWithLayout = NextPage & {
   getLayout?: (page: ReactElement) => ReactNode;
@@ -21,8 +21,8 @@ interface MyAppProps extends AppProps {
 }
 
 const MyApp = ({
-  Component,
   emotionCache = createEmotionCache(),
+  Component,
   pageProps,
   session,
 }: MyAppProps) => {

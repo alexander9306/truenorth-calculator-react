@@ -1,7 +1,7 @@
 import type { ReactElement } from 'react';
-import PageContainer from '../../src/components/container/PageContainer';
-import FullLayout from '../../src/layouts/full/FullLayout';
-import ProductPerformance from '../../src/components/dashboard/ProductPerformance';
+import PageContainer from '../../components/container/PageContainer';
+import FullLayout from '../../components/layouts/full/FullLayout';
+import OperationRecord from '../../components/operations/OperationRecord';
 
 const Records = () => {
   return (
@@ -9,7 +9,7 @@ const Records = () => {
       title="Records"
       description="Records of operations"
     >
-      <ProductPerformance />
+      <OperationRecord />
     </PageContainer>
   );
 };

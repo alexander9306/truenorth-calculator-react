@@ -1,25 +1,21 @@
 import { ReactElement, useState } from 'react';
 import { Grid, Box, Typography } from '@mui/material';
-import PageContainer from '../src/components/container/PageContainer';
+import PageContainer from '../components/container/PageContainer';
 
 // components
-import OperationForm from '../src/components/dashboard/OperationForm';
-import CurrentBalance from '../src/components/dashboard/CurrentBalance';
-import Result from '../src/components/dashboard/Result';
-import FullLayout from '../src/layouts/full/FullLayout';
+import OperationForm from '../components/operations/OperationForm';
+import CurrentBalance from '../components/operations/CurrentBalance';
+import Result from '../components/operations/Result';
+import FullLayout from '../components/layouts/full/FullLayout';
 import { useFetch } from '../lib/useFetch';
 import { FetcherProps } from '../lib/fetcher';
-import Loading from '../src/components/shared/Loading';
+import Loading from '../components/shared/Loading';
 
 export default function Home() {
   const [fetchResultOpt, setFetchResultOpt] =
     useState<FetcherProps | null>(null);
 
-  const {
-    data: result,
-    isLoading,
-    error,
-  } = useFetch<any>(fetchResultOpt);
+  const { data, isLoading, error } = useFetch<any>(fetchResultOpt);
 
   const handleSubmit = (props: any) => {
     setFetchResultOpt({
@@ -49,7 +45,7 @@ export default function Home() {
           <Grid item xs={12} lg={4}>
             <Grid container spacing={3}>
               <Grid item xs={12}>
-                <Result result={result} />
+                <Result result={data?.result} />
               </Grid>
               <Grid item xs={12}>
                 {isLoading ? <Loading /> : <CurrentBalance />}

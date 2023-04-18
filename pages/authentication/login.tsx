@@ -1,11 +1,11 @@
 import Link from 'next/link';
 import type { ReactElement } from 'react';
 import { Grid, Box, Card, Stack, Typography } from '@mui/material';
-import BlankLayout from '../../src/layouts/blank/BlankLayout';
+import BlankLayout from '../../components/layouts/blank/BlankLayout';
 
 // components
-import PageContainer from '../../src/components/container/PageContainer';
-import AuthLogin from '../../src/components/auth/AuthLogin';
+import PageContainer from '../../components/container/PageContainer';
+import AuthLogin from '../../components/auth/AuthLogin';
 
 const Login2 = () => {
   return (

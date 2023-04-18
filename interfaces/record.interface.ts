@@ -5,4 +5,5 @@ export interface Record {
   operation_response: string;
   date: string;
   status: string;
+  user: { id: number; username: string; status: string };
 }
