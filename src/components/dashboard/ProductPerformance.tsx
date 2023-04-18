@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Typography,
   Box,
@@ -10,47 +10,37 @@ import {
   Chip,
 } from '@mui/material';
 import DashboardCard from '../../../src/components/shared/DashboardCard';
-
-const products = [
-  {
-    id: '1',
-    name: 'Sunil Joshi',
-    post: 'Web Designer',
-    pname: 'Elite Admin',
-    priority: 'Low',
-    pbg: 'primary.main',
-    budget: '3.9',
-  },
-  {
-    id: '2',
-    name: 'Andrew McDownland',
-    post: 'Project Manager',
-    pname: 'Real Homes WP Theme',
-    priority: 'Medium',
-    pbg: 'secondary.main',
-    budget: '24.5',
-  },
-  {
-    id: '3',
-    name: 'Christopher Jamil',
-    post: 'Project Manager',
-    pname: 'MedicalPro WP Theme',
-    priority: 'High',
-    pbg: 'error.main',
-    budget: '12.8',
-  },
-  {
-    id: '4',
-    name: 'Nirav Joshi',
-    post: 'Frontend Engineer',
-    pname: 'Hosting Press HTML',
-    priority: 'Critical',
-    pbg: 'success.main',
-    budget: '2.4',
-  },
-];
+import CustomPaginationButtons from '../forms/theme-elements/CustomPagination';
+import { useFetch } from '../../../lib/useFetch';
+import { CollectionResponse } from '../../../interfaces/collections-response.interface';
+import { Record } from '../../../interfaces/record.interface';
 
 const ProductPerformance = () => {
+  const initialState = {
+    pageNumber: 1,
+    pageSize: 10,
+    sortField: 'date',
+    sortDirection: 'DESC',
+    filterValue: '',
+    filterField: '',
+  };
+
+  const [query, setQuery] = useState(initialState);
+
+  const {
+    pageNumber,
+    pageSize,
+    sortField,
+    sortDirection,
+    filterValue,
+    filterField,
+  } = query;
+
+  const url = `/v1/records?pageNumber=${pageNumber}&pageSize=${pageSize}&sortField=${sortField}&sortDirection=${sortDirection}`;
+
+  const { data: records, isLoading } =
+    useFetch<CollectionResponse<Record>>(url);
+
   return (
     <DashboardCard title="Product Performance">
       <Box
@@ -72,29 +62,34 @@ const ProductPerformance = () => {
               </TableCell>
               <TableCell>
                 <Typography variant="subtitle2" fontWeight={600}>
-                  Assigned
+                  Amount
                 </Typography>
               </TableCell>
               <TableCell>
                 <Typography variant="subtitle2" fontWeight={600}>
-                  Name
+                  User Balance
                 </Typography>
               </TableCell>
               <TableCell>
                 <Typography variant="subtitle2" fontWeight={600}>
-                  Priority
+                  Operation Response
                 </Typography>
               </TableCell>
               <TableCell align="right">
                 <Typography variant="subtitle2" fontWeight={600}>
-                  Budget
+                  Date
+                </Typography>
+              </TableCell>
+              <TableCell align="right">
+                <Typography variant="subtitle2" fontWeight={600}>
+                  Status
                 </Typography>
               </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {products.map((product) => (
-              <TableRow key={product.name}>
+            {records?.data.map((record) => (
+              <TableRow key={record.id}>
                 <TableCell>
                   <Typography
                     sx={{
@@ -102,7 +97,7 @@ const ProductPerformance = () => {
                       fontWeight: '500',
                     }}
                   >
-                    {product.id}
+                    {record.id}
                   </Typography>
                 </TableCell>
                 <TableCell>
@@ -117,7 +112,7 @@ const ProductPerformance = () => {
                         variant="subtitle2"
                         fontWeight={600}
                       >
-                        {product.name}
+                        {record.amount}
                       </Typography>
                       <Typography
                         color="textSecondary"
@@ -125,7 +120,7 @@ const ProductPerformance = () => {
                           fontSize: '13px',
                         }}
                       >
-                        {product.post}
+                        {record.user_balance}
                       </Typography>
                     </Box>
                   </Box>
@@ -136,29 +131,36 @@ const ProductPerformance = () => {
                     variant="subtitle2"
                     fontWeight={400}
                   >
-                    {product.pname}
+                    {record.operation_response}
                   </Typography>
+                </TableCell>
+                <TableCell align="right">
+                  <Typography variant="h6">${record.date}</Typography>
                 </TableCell>
                 <TableCell>
                   <Chip
                     sx={{
                       px: '4px',
-                      backgroundColor: product.pbg,
+                      backgroundColor:
+                        record.status === 'active'
+                          ? 'primary.main'
+                          : 'error.main',
                       color: '#fff',
                     }}
                     size="small"
-                    label={product.priority}
+                    label={record.status}
                   ></Chip>
-                </TableCell>
-                <TableCell align="right">
-                  <Typography variant="h6">
-                    ${product.budget}k
-                  </Typography>
                 </TableCell>
               </TableRow>
             ))}
           </TableBody>
         </Table>
+        <Box textAlign="right" mt={3}>
+          <CustomPaginationButtons
+            count={records?.totalPages}
+            color="primary"
+          />
+        </Box>
       </Box>
     </DashboardCard>
   );

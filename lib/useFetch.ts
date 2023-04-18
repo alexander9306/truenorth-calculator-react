@@ -1,5 +1,5 @@
 import useSWR from 'swr';
-import { useSession } from 'next-auth/react';
+import { signOut, useSession } from 'next-auth/react';
 import { FetcherProps, fetcher } from './fetcher';
 
 export const useFetch = <T = unknown>(
@@ -28,11 +28,16 @@ export const useFetch = <T = unknown>(
         if (
           error.message ===
           'Insufficient balance to perform this operation'
-        )
+        ) {
           return;
-        if (error.status === 404)
-          // Never retry on 404.
-          return;
+        }
+
+        // Only retry up to 3 times on Unauthorized
+        if (error.message === 'Unauthorized' && retryCount >= 3)
+          return signOut();
+
+        // Never retry on 404.
+        if (error.status === 404) return;
 
         // Never retry for a specific key.
         if (key === '/api/user') return;
