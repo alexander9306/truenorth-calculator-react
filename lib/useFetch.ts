@@ -32,18 +32,14 @@ export const useFetch = <T = unknown>(
           return;
         }
 
-        // Only retry up to 3 times on Unauthorized
-        if (error.message === 'Unauthorized' && retryCount >= 3)
-          return signOut();
+        // Only retry up to 3 times on Unauthorized then signOut
+        if (error.status === 401 && retryCount >= 3) return signOut();
 
         // Never retry on 404.
-        if (error.status === 404) return;
+        if (error.status === 404 || error.status === 400) return;
 
-        // Never retry for a specific key.
-        if (key === '/api/user') return;
-
-        // Only retry up to 10 times.
-        if (retryCount >= 10) return;
+        // Only retry up to 5 times to avoid being Throttle.
+        if (retryCount >= 5) return;
 
         // Retry after 5 seconds.
         setTimeout(() => revalidate({ retryCount }), 5000);

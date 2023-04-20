@@ -27,8 +27,11 @@ export const fetcher = async (req: FetcherProps) => {
   const res = await fetch(url, fetchOptions);
 
   if (!res.ok) {
-    const error = await res.json();
-    throw new Error(error.message);
+    const reason = await res.json();
+    const error: any = new Error(reason.message);
+
+    error.status = res.status;
+    throw error;
   }
 
   const result = await res.json();
