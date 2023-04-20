@@ -32,6 +32,5 @@ export const fetcher = async (req: FetcherProps) => {
   }
 
   const result = await res.json();
-  console.log('result', result);
   return result;
 };
