@@ -46,8 +46,15 @@ export const useFetch = <T = unknown>(
             break;
         }
 
-        // Only retry up to 5 times to avoid being Throttle.
-        if (retryCount >= 5) return;
+        if (
+          (key as any)?.url === '/v1/operations' &&
+          error.status !== 401
+        )
+          return;
+
+        if (retryCount >= 5)
+          // Only retry up to 5 times to avoid being Throttle.
+          return;
 
         // Retry after 5 seconds.
         setTimeout(() => revalidate({ retryCount }), 5000);
