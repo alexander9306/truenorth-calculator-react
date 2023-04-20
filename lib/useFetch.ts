@@ -32,11 +32,19 @@ export const useFetch = <T = unknown>(
           return;
         }
 
-        // Only retry up to 3 times on Unauthorized then signOut
-        if (error.status === 401 && retryCount >= 3) return signOut();
+        switch (error.status) {
+          case 401:
+            if (retryCount >= 3) return signOut();
+            break;
+          // Never retry on 404 400 409
+          case 404:
+          case 400:
+          case 409:
+            return;
 
-        // Never retry on 404.
-        if (error.status === 404 || error.status === 400) return;
+          default:
+            break;
+        }
 
         // Only retry up to 5 times to avoid being Throttle.
         if (retryCount >= 5) return;
