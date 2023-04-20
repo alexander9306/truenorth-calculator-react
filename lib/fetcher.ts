@@ -8,7 +8,8 @@ export type FetcherProps = {
 type FetchRequestInit = Parameters<typeof fetch>[1];
 
 export const fetcher = async (req: FetcherProps) => {
-  const baseUrl = process.env.NEXT_API_URL || 'http://localhost:3002';
+  const baseUrl =
+    process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3002';
 
   const url = baseUrl + req.url;
 

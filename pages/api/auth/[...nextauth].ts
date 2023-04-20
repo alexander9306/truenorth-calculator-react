@@ -37,7 +37,7 @@ export default NextAuth({
         const { username, password } = credentials;
 
         const url =
-          process.env.NEXT_API_URL || 'http://localhost:3002';
+          process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3002';
 
         const res = await fetch(`${url}/v1/auth/login`, {
           method: 'POST',
