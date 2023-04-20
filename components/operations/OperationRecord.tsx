@@ -64,7 +64,9 @@ const OperationRecord = () => {
       action={
         <FilterTable
           handleFilterChange={handleFilterChange}
-          tableHeaders={tableHeaders}
+          tableHeaders={tableHeaders.filter(
+            (table) => table.id !== 'date'
+          )}
         />
       }
     >

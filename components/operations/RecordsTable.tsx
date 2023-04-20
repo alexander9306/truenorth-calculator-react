@@ -14,6 +14,7 @@ import { Record } from '../../interfaces/record.interface';
 import { useFetch } from '../../lib/useFetch';
 import CustomPaginationButtons from '../theme-elements/CustomPagination';
 import LoadingTable from './LoadingTable';
+import { useEffect, useState } from 'react';
 
 interface RecordsTableProps {
   tableHeaders: { name: string; id: string }[];
@@ -33,8 +34,20 @@ interface RecordsTableProps {
 const RecordsTable = (props: RecordsTableProps) => {
   const url = `/v1/records?pageNumber=${props.pageNumber}&pageSize=${props.pageSize}&sortField=${props.sortField}&sortDirection=${props.sortDirection}&filterValue=${props.filterValue}&filterField=${props.filterField}`;
 
+  const [loadTable, setLoadTable] = useState(false);
+
   const { data: records, isLoading } =
     useFetch<CollectionResponse<Record>>(url);
+
+  // Mimic a loading effect
+  useEffect(() => {
+    setLoadTable(true);
+    const id = setTimeout(() => {
+      setLoadTable(false);
+    }, 1000);
+
+    return () => clearTimeout(id);
+  }, [isLoading]);
 
   return (
     <Box
@@ -73,7 +86,7 @@ const RecordsTable = (props: RecordsTableProps) => {
             ))}
           </TableRow>
         </TableHead>
-        {isLoading ? (
+        {loadTable ? (
           <LoadingTable
             pageSize={props.pageSize}
             tableSize={props.tableHeaders.length}
@@ -156,10 +169,9 @@ const RecordsTable = (props: RecordsTableProps) => {
         )}
       </Table>
       <Box
-        textAlign="right"
         mt={4}
         sx={{
-          float: 'right',
+          position: 'absolute',
           right: '0',
           bottom: '20px',
         }}

@@ -40,6 +40,7 @@ export const useFetch = <T = unknown>(
           case 404:
           case 400:
           case 409:
+          case 469:
             return;
 
           default:
