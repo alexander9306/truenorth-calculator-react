@@ -1,5 +1,6 @@
 {
-  "name": "modernize-next-ts",
+  "name": "calculator-next-ts",
+  "author": "Alexander Damaso",
   "version": "1.0.0",
   "private": true,
   "scripts": {

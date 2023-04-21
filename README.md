@@ -1,44 +1,41 @@
-# Material UI - Next.js example in TypeScript
+# Frontend Calculator
 
-## How to use
+This is the frontend application for the [Calculator app](https://github.com/alexander9306/truenorth-calculator-api), built with Next.js. It interacts with the backend API server to perform mathematical calculations and display the results in a user-friendly interface.
 
-Download the example [or clone the repo](https://github.com/mui/material-ui):
+[Demo](https://vercel.com/alexander9306/back-end-calculator-react)
 
-<!-- #default-branch-switch -->
+## Getting Started
 
-```sh
-curl https://codeload.github.com/mui/material-ui/tar.gz/master | tar -xz --strip=2  material-ui-master/examples/material-next-ts
-cd material-next-ts
+To get started with the Calculator frontend, follow these steps:
+
+1. Clone the repository to your local machine.
+2. Install the dependencies using npm by running `npm install` in the project root directory.
+3. Set up the environment variables in a `.env` file at the root of the project. The following environment variables are required:
+
+```diff
+NEXT_PUBLIC_API_URL=<api_server_endpoint>      # API server endpoint
+NEXTAUTH_URL=<domain_server>                   # Domain server
+NEXTAUTH_SECRET=<secret_token>                 # Secret token
 ```
 
-Install it and run:
+## Development
 
-```sh
-npm install
+To run the Calculator frontend in development mode, use the following command:
+
+```bash
 npm run dev
 ```
 
-or:
+This will start the development server and you can access the app in your browser at http://localhost:3000.
 
-<!-- #default-branch-switch -->
+#### Note:
 
-[![Edit on StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/mui/material-ui/tree/master/examples/material-next-ts)
+If you need to change the port of the app add the `-p ${PORT}` param
 
-[![Edit on CodeSandbox](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/github/mui/material-ui/tree/master/examples/material-next-ts)
+## About
 
-## The idea behind the example
+The Calculator frontend is built using Next.js, a popular React framework for building server-rendered React applications. The app follows best practices for frontend development, including code organization, performance optimization, and responsive design.
 
-The project uses [Next.js](https://github.com/vercel/next.js), which is a framework for server-rendered React apps.
-It includes `@mui/material` and its peer dependencies, including [Emotion](https://emotion.sh/docs/introduction), the default style engine in Material UI v5. If you prefer, you can [use styled-components instead](https://mui.com/material-ui/guides/interoperability/#styled-components).
+## License
 
-## The link component
-
-The [example folder](https://github.com/mui/material-ui/tree/HEAD/examples/material-next-ts) provides an adapter for the use of [Next.js's Link component](https://nextjs.org/docs/api-reference/next/link) with MUI.
-More information [in the documentation](https://mui.com/material-ui/guides/routing/#next-js).
-
-## What's next?
-
-<!-- #default-branch-switch -->
-
-You now have a working example project.
-You can head back to the documentation, continuing browsing it from the [templates](https://mui.com/material-ui/getting-started/templates/) section.
+This project is licensed under the [MIT License](https://opensource.org/licenses/MIT).
