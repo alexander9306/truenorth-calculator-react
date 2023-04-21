@@ -2,7 +2,7 @@
 
 This is the frontend application for the [Calculator app](https://github.com/alexander9306/truenorth-calculator-api), built with Next.js. It interacts with the backend API server to perform mathematical calculations and display the results in a user-friendly interface.
 
-[Demo](https://vercel.com/alexander9306/back-end-calculator-react)
+[Demo](https://react-calculator-with-records.vercel.app/)
 
 ## Getting Started
 
