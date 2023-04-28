@@ -64,7 +64,7 @@ const RecordsDashboard = () => {
     { name: 'Cost/Balance', id: 'amount' },
     { name: 'UserId', id: 'user' },
     { name: 'Response', id: 'operation_response' },
-    { name: 'Date', id: 'date', filter: false },
+    { name: 'Date', id: 'date' },
     { name: 'Status', id: 'status' },
     { name: 'Delete', id: 'delete', filter: false, sort: false },
   ];

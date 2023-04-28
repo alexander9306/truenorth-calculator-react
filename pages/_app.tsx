@@ -5,6 +5,8 @@ import type { NextPage } from 'next';
 import Head from 'next/head';
 import { AppProps } from 'next/app';
 import { ThemeProvider } from '@mui/material/styles';
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import CssBaseline from '@mui/material/CssBaseline';
 import { CacheProvider, EmotionCache } from '@emotion/react';
 import createEmotionCache from '@/createEmotionCache';
@@ -38,11 +40,13 @@ const MyApp = ({
           />
           <title>Calculator App</title>
         </Head>
-        <ThemeProvider theme={theme}>
-          {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
-          <CssBaseline />
-          {getLayout(<Component {...pageProps} />)}
-        </ThemeProvider>
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+          <ThemeProvider theme={theme}>
+            {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
+            <CssBaseline />
+            {getLayout(<Component {...pageProps} />)}
+          </ThemeProvider>
+        </LocalizationProvider>
       </CacheProvider>
     </SessionProvider>
   );

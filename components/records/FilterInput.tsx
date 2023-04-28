@@ -1,5 +1,6 @@
 import {
   FormControl,
+  IconButton,
   InputLabel,
   MenuItem,
   Select,
@@ -7,6 +8,8 @@ import {
 } from '@mui/material';
 import CustomTextField from '../theme-elements/CustomTextField';
 import { useState } from 'react';
+import { DatePicker } from '@mui/x-date-pickers';
+import ClearIcon from '@mui/icons-material/Clear';
 
 interface FilterInputProps {
   tableHeaders: { name: string; id: string }[];
@@ -24,6 +27,20 @@ const FilterInput = ({
     setFilter(value);
     handleFilterChange(value, column);
   };
+  const handleColumnChange = (e: any) => {
+    const value = e.target.value;
+    setColumn(value);
+
+    if (value === 'date') setFilter('');
+  };
+
+  const handleClearClick = () => {
+    setFilter('');
+    handleFilterChange('', column);
+  };
+
+  const handleDateChange = (date: any) =>
+    handleFilterChange(date.toString(), column);
 
   return (
     <Stack
@@ -33,12 +50,27 @@ const FilterInput = ({
       justifyContent="flex-end"
     >
       <FormControl sx={{ width: '180px' }} fullWidth>
-        <CustomTextField
-          variant="outlined"
-          label="Filter"
-          value={filter}
-          onChange={handleChange}
-        />
+        {column === 'date' && (
+          <DatePicker label="Date" onChange={handleDateChange} />
+        )}
+        {column !== 'date' && (
+          <CustomTextField
+            variant="outlined"
+            label="Filter"
+            value={filter}
+            onChange={handleChange}
+            InputProps={{
+              endAdornment: (
+                <IconButton
+                  sx={{ visibility: filter ? 'visible' : 'hidden' }}
+                  onClick={handleClearClick}
+                >
+                  <ClearIcon />
+                </IconButton>
+              ),
+            }}
+          />
+        )}
       </FormControl>
 
       <FormControl sx={{ width: '180px' }}>
@@ -49,7 +81,7 @@ const FilterInput = ({
           label="Column"
           size="medium"
           value={column}
-          onChange={(e) => setColumn(e.target.value)}
+          onChange={handleColumnChange}
         >
           {tableHeaders.map(({ name, id }) => (
             <MenuItem
