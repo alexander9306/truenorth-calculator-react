@@ -12,7 +12,7 @@ import { DatePicker } from '@mui/x-date-pickers';
 import ClearIcon from '@mui/icons-material/Clear';
 
 interface FilterInputProps {
-  tableHeaders: { name: string; id: string }[];
+  tableHeaders: { name: string; id: string; filterName?: string }[];
   handleFilterChange: (filter: string, field: string) => void;
 }
 const FilterInput = ({
@@ -83,13 +83,13 @@ const FilterInput = ({
           value={column}
           onChange={handleColumnChange}
         >
-          {tableHeaders.map(({ name, id }) => (
+          {tableHeaders.map(({ name, id, filterName }) => (
             <MenuItem
               sx={{ textTransform: 'capitalize' }}
               value={id}
               key={id}
             >
-              {name}
+              {filterName ?? name}
             </MenuItem>
           ))}
         </Select>

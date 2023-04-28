@@ -61,7 +61,7 @@ const RecordsDashboard = () => {
 
   const tableHeaders = [
     { name: 'Id', id: 'id' },
-    { name: 'Cost/Balance', id: 'amount' },
+    { name: 'Cost/Balance', id: 'amount', filterName: 'Cost' },
     { name: 'UserId', id: 'user' },
     { name: 'Response', id: 'operation_response' },
     { name: 'Date', id: 'date' },
