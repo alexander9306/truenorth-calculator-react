@@ -6,7 +6,7 @@ import * as yup from 'yup';
 import CustomTextField from '../theme-elements/CustomTextField';
 import { Stack } from '@mui/system';
 import { useRouter } from 'next/router';
-import { useFetch } from '../../lib/useFetch';
+import { useFetch, useSWRFetch } from '../../lib/useFetch';
 import { FetcherProps } from '../../lib/fetcher';
 import { LoadingButton } from '@mui/lab';
 
@@ -30,8 +30,10 @@ const validationSchema = yup.object({
 
 const AuthRegister = ({ title, subtitle, subtext }: registerType) => {
   const router = useRouter();
-  const [fetcherOptions, setFetcherOptions] =
-    useState<FetcherProps | null>(null);
+  const [error, setError] = useState<any>();
+  const [loading, setLoading] = useState(false);
+
+  const { fetcher } = useFetch();
 
   const formik = useFormik({
     initialValues: {
@@ -40,20 +42,23 @@ const AuthRegister = ({ title, subtitle, subtext }: registerType) => {
       passwordConfirmation: '',
     },
     validationSchema: validationSchema,
-    onSubmit: ({ username, password }) => {
-      setFetcherOptions({
-        url: '/v1/auth/signup',
-        method: 'POST',
-        body: JSON.stringify({ username, password }),
-      });
+    onSubmit: async ({ username, password }) => {
+      setLoading(true);
+      try {
+        await fetcher({
+          url: '/v1/auth/signup',
+          method: 'POST',
+          body: JSON.stringify({ username, password }),
+        });
+
+        await router.push('/authentication/login');
+      } catch (err) {
+        setError(err);
+      }
+
+      setLoading(false);
     },
   });
-
-  const { data, error, isLoading } = useFetch(fetcherOptions);
-
-  if (data) {
-    router.push('/authentication/login');
-  }
 
   return (
     <>
@@ -158,7 +163,7 @@ const AuthRegister = ({ title, subtitle, subtext }: registerType) => {
           </Typography>
 
           <LoadingButton
-            loading={isLoading}
+            loading={loading}
             loadingIndicator="Loading..."
             color="primary"
             variant="contained"

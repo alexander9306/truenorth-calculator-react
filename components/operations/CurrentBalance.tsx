@@ -8,16 +8,19 @@ import { Grid, Typography } from '@mui/material';
 
 import DashboardCard from '../shared/DashboardCard';
 import getCurrentBalanceChartOptions from '../../lib/getCurrentBalanceChartOptions';
-import { useFetch } from '../../lib/useFetch';
 import { Balance } from '../../interfaces/balance.interface';
 import Loading from '../shared/Loading';
 
-const CurrentBalance = () => {
-  const theme = useTheme();
+interface CurrentBalanceProps {
+  balance?: Balance;
+  isLoading?: boolean;
+}
 
-  const { data: balance, isLoading } = useFetch<Balance>(
-    '/v1/operations/balance'
-  );
+const CurrentBalance = ({
+  balance,
+  isLoading,
+}: CurrentBalanceProps) => {
+  const theme = useTheme();
 
   if (isLoading) {
     return <Loading />;

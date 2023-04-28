@@ -7,22 +7,41 @@ import OperationForm from '../components/operations/OperationForm';
 import CurrentBalance from '../components/operations/CurrentBalance';
 import Result from '../components/operations/Result';
 import FullLayout from '../components/layouts/full/FullLayout';
-import { useFetch } from '../lib/useFetch';
-import { FetcherProps } from '../lib/fetcher';
-import Loading from '../components/shared/Loading';
+import { useFetch, useSWRFetch } from '../lib/useFetch';
+import { Balance } from '@/interfaces/balance.interface';
 
 export default function Home() {
-  const [fetchResultOpt, setFetchResultOpt] =
-    useState<FetcherProps | null>(null);
+  const [error, setError] = useState<any>();
+  const [data, setData] = useState<any>();
+  const [loading, setLoading] = useState(false);
 
-  const { data, isLoading, error } = useFetch<any>(fetchResultOpt);
+  const { fetcher } = useFetch();
 
-  const handleSubmit = (props: any) => {
-    setFetchResultOpt({
-      url: '/v1/operations',
-      method: 'POST',
-      body: JSON.stringify(props),
-    });
+  const { data: balance, mutate } = useSWRFetch<Balance>(
+    '/v1/operations/balance'
+  );
+
+  const handleSubmit = async (props: any, cost: number) => {
+    setError(undefined);
+    setLoading(true);
+
+    try {
+      const res = await fetcher({
+        url: '/v1/operations',
+        method: 'POST',
+        body: JSON.stringify(props),
+      });
+      setData(res);
+
+      if (balance)
+        mutate({
+          ...balance,
+          currentBalance: balance.currentBalance - cost,
+        });
+    } catch (error) {
+      setError(error);
+    }
+    setLoading(false);
   };
 
   return (
@@ -48,7 +67,10 @@ export default function Home() {
                 <Result result={data?.result} />
               </Grid>
               <Grid item xs={12}>
-                {isLoading ? <Loading /> : <CurrentBalance />}
+                <CurrentBalance
+                  balance={balance}
+                  isLoading={loading}
+                />
               </Grid>
             </Grid>
           </Grid>

@@ -1,7 +1,7 @@
 import type { ReactElement } from 'react';
 import PageContainer from '../../components/container/PageContainer';
 import FullLayout from '../../components/layouts/full/FullLayout';
-import OperationRecord from '../../components/operations/OperationRecord';
+import RecordsDashboard from '../../components/records/RecordsDashboard';
 
 const Records = () => {
   return (
@@ -9,7 +9,7 @@ const Records = () => {
       title="Operations record"
       description="Record of all operations"
     >
-      <OperationRecord />
+      <RecordsDashboard />
     </PageContainer>
   );
 };

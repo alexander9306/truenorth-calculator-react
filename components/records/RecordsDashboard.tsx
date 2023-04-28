@@ -2,13 +2,14 @@ import React, { useMemo, useState } from 'react';
 
 import DashboardCard from '../shared/DashboardCard';
 import RecordsTable from './RecordsTable';
-import FilterTable from './FilterTable';
+import FilterInput from './FilterInput';
 import { debounce } from 'lodash';
+import { useFetch } from '@/lib/useFetch';
 
-const OperationRecord = () => {
+const RecordsDashboard = () => {
   const initialState = {
     pageNumber: 1,
-    pageSize: 8,
+    pageSize: 7,
     sortField: 'date',
     sortDirection: 'DESC',
     filterValue: '',
@@ -49,23 +50,33 @@ const OperationRecord = () => {
     []
   );
 
+  const { fetcher } = useFetch();
+
+  const handleDeleteClick = async (id: number) => {
+    await fetcher({
+      url: `/v1/records/${id}`,
+      method: 'DELETE',
+    });
+  };
+
   const tableHeaders = [
     { name: 'Id', id: 'id' },
     { name: 'Cost/Balance', id: 'amount' },
     { name: 'UserId', id: 'user' },
     { name: 'Response', id: 'operation_response' },
-    { name: 'Date', id: 'date' },
+    { name: 'Date', id: 'date', filter: false },
     { name: 'Status', id: 'status' },
+    { name: 'Delete', id: 'delete', filter: false, sort: false },
   ];
 
   return (
     <DashboardCard
       title="Operations record"
       action={
-        <FilterTable
+        <FilterInput
           handleFilterChange={handleFilterChange}
           tableHeaders={tableHeaders.filter(
-            (table) => table.id !== 'date'
+            (table) => table.filter !== false
           )}
         />
       }
@@ -76,6 +87,7 @@ const OperationRecord = () => {
           tableHeaders={tableHeaders}
           handlePageChange={handlePageChange}
           handleSortPage={handleSortPage}
+          handleDeleteClick={handleDeleteClick}
         />
         {/* Use to preload the next page for better UX */}
         <div style={{ display: 'none' }}>
@@ -85,6 +97,7 @@ const OperationRecord = () => {
             handlePageChange={handlePageChange}
             handleSortPage={handleSortPage}
             tableHeaders={tableHeaders}
+            handleDeleteClick={handleDeleteClick}
           />
         </div>
       </>
@@ -92,4 +105,4 @@ const OperationRecord = () => {
   );
 };
 
-export default OperationRecord;
+export default RecordsDashboard;

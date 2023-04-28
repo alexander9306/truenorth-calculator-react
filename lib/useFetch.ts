@@ -1,8 +1,9 @@
 import useSWR from 'swr';
 import { signOut, useSession } from 'next-auth/react';
 import { FetcherProps, fetcher } from './fetcher';
+import { useEffect } from 'react';
 
-export const useFetch = <T = unknown>(
+export const useSWRFetch = <T = unknown>(
   req: FetcherProps | string | null
 ) => {
   const fetchOptions = {
@@ -13,7 +14,7 @@ export const useFetch = <T = unknown>(
   const { data: session }: { data: any } = useSession();
   const accessToken = session?.accessToken;
 
-  const { data, error, isLoading } = useSWR<T>(
+  const data = useSWR<T>(
     req === null ? req : { ...fetchOptions, accessToken },
     fetcher,
     {
@@ -36,7 +37,7 @@ export const useFetch = <T = unknown>(
           case 401:
             if (retryCount >= 3) return signOut();
             break;
-          // Never retry on 404 400 409
+          // Never retry on these error codes
           case 404:
           case 400:
           case 409:
@@ -63,5 +64,15 @@ export const useFetch = <T = unknown>(
     }
   );
 
-  return { data, error, isLoading };
+  return data;
+};
+
+export const useFetch = () => {
+  const { data: session }: { data: any } = useSession();
+  const accessToken = session?.accessToken;
+
+  const fetch = <T = unknown>(req: FetcherProps): Promise<T> =>
+    fetcher({ ...req, accessToken });
+
+  return { fetcher: fetch };
 };

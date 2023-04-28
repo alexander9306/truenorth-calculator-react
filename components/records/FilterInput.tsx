@@ -8,14 +8,14 @@ import {
 import CustomTextField from '../theme-elements/CustomTextField';
 import { useState } from 'react';
 
-interface FilterTableProps {
+interface FilterInputProps {
   tableHeaders: { name: string; id: string }[];
   handleFilterChange: (filter: string, field: string) => void;
 }
-const FilterTable = ({
+const FilterInput = ({
   tableHeaders,
   handleFilterChange,
-}: FilterTableProps) => {
+}: FilterInputProps) => {
   const [column, setColumn] = useState(tableHeaders[0].id);
   const [filter, setFilter] = useState('');
 
@@ -66,4 +66,4 @@ const FilterTable = ({
   );
 };
 
-export default FilterTable;
+export default FilterInput;

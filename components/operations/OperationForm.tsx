@@ -15,7 +15,7 @@ import * as yup from 'yup';
 import DashboardCard from '../shared/DashboardCard';
 import CustomTextField from '../theme-elements/CustomTextField';
 import { Operation } from '../../interfaces/operation.interface';
-import { useFetch } from '../../lib/useFetch';
+import { useSWRFetch } from '../../lib/useFetch';
 import { CollectionResponse } from '../../interfaces/collections-response.interface';
 
 const validationSchema = yup.object({
@@ -34,10 +34,14 @@ const validationSchema = yup.object({
 });
 
 interface OperationFormProps {
-  handleSubmit: (props: any) => void;
+  handleSubmit: (props: any, cost: number) => void;
 }
 
 const OperationForm = ({ handleSubmit }: OperationFormProps) => {
+  const { data: operations } = useSWRFetch<
+    CollectionResponse<Operation>
+  >('/v1/operations?pageSize=100&sortField=id&sortDirection=ASC');
+
   const formik = useFormik({
     initialValues: {
       type: undefined,
@@ -46,17 +50,16 @@ const OperationForm = ({ handleSubmit }: OperationFormProps) => {
     },
     validationSchema: validationSchema,
     onSubmit: ({ type, ...rest }) =>
-      handleSubmit({
-        type,
-        ...(type !== 'random_string' && { num1: rest.num1 }),
-        ...(type !== 'random_string' &&
-          type !== 'square_root' && { num2: rest.num2 }),
-      }),
+      handleSubmit(
+        {
+          type,
+          ...(type !== 'random_string' && { num1: rest.num1 }),
+          ...(type !== 'random_string' &&
+            type !== 'square_root' && { num2: rest.num2 }),
+        },
+        operations?.data.find((v) => v.type === type)?.cost ?? 0
+      ),
   });
-
-  const { data: operations } = useFetch<
-    CollectionResponse<Operation>
-  >('/v1/operations?pageSize=100&sortField=id&sortDirection=ASC');
 
   return (
     <form onSubmit={formik.handleSubmit}>
@@ -68,11 +71,9 @@ const OperationForm = ({ handleSubmit }: OperationFormProps) => {
             <Select
               labelId="type-dd"
               label="Type"
-              name="type"
               id="type-dd"
               size="medium"
-              value={formik.values.type}
-              onChange={formik.handleChange}
+              {...formik.getFieldProps('type')}
               error={
                 formik.touched.type && Boolean(formik.errors.type)
               }
@@ -105,12 +106,10 @@ const OperationForm = ({ handleSubmit }: OperationFormProps) => {
             <Grid item xs={6} md={10}>
               <CustomTextField
                 variant="outlined"
-                name="num1"
                 id="num1"
                 size="small"
                 type="number"
-                value={formik.values.num1}
-                onChange={formik.handleChange}
+                {...formik.getFieldProps('num1')}
                 disabled={formik.values.type === 'random_string'}
                 error={
                   formik.touched.num1 && Boolean(formik.errors.num1)
@@ -134,12 +133,10 @@ const OperationForm = ({ handleSubmit }: OperationFormProps) => {
             <Grid item xs={6} md={10}>
               <CustomTextField
                 variant="outlined"
-                name="num2"
                 id="num2"
                 size="small"
                 type="number"
-                value={formik.values.num2}
-                onChange={formik.handleChange}
+                {...formik.getFieldProps('num2')}
                 disabled={
                   formik.values.type === 'random_string' ||
                   formik.values.type === 'square_root'
@@ -160,6 +157,7 @@ const OperationForm = ({ handleSubmit }: OperationFormProps) => {
                 size="large"
                 fullWidth
                 type="submit"
+                disabled={formik.isSubmitting}
               >
                 Submit
               </Button>

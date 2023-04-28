@@ -3,6 +3,7 @@ export type FetcherProps = {
   method?: 'POST' | 'GET' | 'PUT' | 'PATCH' | 'DELETE';
   body?: any;
   accessToken?: string;
+  signal?: AbortSignal;
 };
 
 type FetchRequestInit = Parameters<typeof fetch>[1];

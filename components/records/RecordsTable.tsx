@@ -1,5 +1,6 @@
 import {
   Box,
+  Button,
   Chip,
   Table,
   TableBody,
@@ -11,13 +12,13 @@ import {
 } from '@mui/material';
 import { CollectionResponse } from '../../interfaces/collections-response.interface';
 import { Record } from '../../interfaces/record.interface';
-import { useFetch } from '../../lib/useFetch';
+import { useSWRFetch } from '../../lib/useFetch';
 import CustomPaginationButtons from '../theme-elements/CustomPagination';
-import LoadingTable from './LoadingTable';
+import LoadingTable from '../operations/LoadingTable';
 import { useEffect, useState } from 'react';
 
 interface RecordsTableProps {
-  tableHeaders: { name: string; id: string }[];
+  tableHeaders: { name: string; id: string; sort?: boolean }[];
   pageNumber: number;
   pageSize: number;
   sortField: string;
@@ -29,6 +30,9 @@ interface RecordsTableProps {
     page: number
   ) => void;
   handleSortPage: (sortField: string) => void;
+  handleDeleteClick:
+    | ((id: number) => void)
+    | ((id: number) => Promise<void>);
 }
 
 const RecordsTable = (props: RecordsTableProps) => {
@@ -36,25 +40,42 @@ const RecordsTable = (props: RecordsTableProps) => {
 
   const [loadTable, setLoadTable] = useState(false);
 
-  const { data: records, isLoading } =
-    useFetch<CollectionResponse<Record>>(url);
+  const {
+    data: records,
+    isLoading,
+    mutate,
+  } = useSWRFetch<CollectionResponse<Record>>(url);
+  -(
+    // Mimic a loading effect
+    useEffect(() => {
+      setLoadTable(true);
+      const id = setTimeout(() => {
+        setLoadTable(false);
+      }, 1000);
 
-  // Mimic a loading effect
-  useEffect(() => {
-    setLoadTable(true);
-    const id = setTimeout(() => {
-      setLoadTable(false);
-    }, 1000);
+      return () => clearTimeout(id);
+    }, [isLoading])
+  );
 
-    return () => clearTimeout(id);
-  }, [isLoading]);
+  const onDeleteClick = async (id: number) => {
+    await props.handleDeleteClick(id);
+    if (records)
+      mutate({
+        ...records,
+        data: records?.data.map((record) =>
+          record.id === id
+            ? { ...record, status: 'inactive' }
+            : record
+        ),
+      });
+  };
 
   return (
     <Box
       sx={{
         overflow: 'auto',
         width: { xs: '280px', sm: 'auto' },
-        height: '600px',
+        height: '590px',
         position: 'relative',
       }}
     >
@@ -71,12 +92,16 @@ const RecordsTable = (props: RecordsTableProps) => {
               <TableCell key={header.id}>
                 <TableSortLabel
                   active={props.sortField === header.id}
+                  hideSortIcon={header.sort === false}
                   direction={
                     props.sortDirection.toLowerCase() as
                       | 'desc'
                       | 'asc'
                   }
-                  onClick={() => props.handleSortPage(header.id)}
+                  onClick={() =>
+                    header.sort !== false &&
+                    props.handleSortPage(header.id)
+                  }
                 >
                   <Typography variant="subtitle2" fontWeight={600}>
                     {header.name}
@@ -162,6 +187,17 @@ const RecordsTable = (props: RecordsTableProps) => {
                     size="small"
                     label={record.status}
                   ></Chip>
+                </TableCell>
+                <TableCell>
+                  <Button
+                    disabled={record.status === 'inactive'}
+                    color="error"
+                    variant="outlined"
+                    size="small"
+                    onClick={() => onDeleteClick(record.id)}
+                  >
+                    Delete
+                  </Button>
                 </TableCell>
               </TableRow>
             ))}
