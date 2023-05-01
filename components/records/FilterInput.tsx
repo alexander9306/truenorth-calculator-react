@@ -37,7 +37,11 @@ const FilterInput = ({
     const value = e.target.value;
     setColumn(value);
 
-    if (value === 'date') clearValues();
+    if (value === 'date' || column === 'date') {
+      clearValues();
+    } else {
+      handleFilterChange(filter, value);
+    }
   };
 
   const handleClearClick = () => clearValues();

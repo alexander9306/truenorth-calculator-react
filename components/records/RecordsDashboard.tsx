@@ -46,7 +46,7 @@ const RecordsDashboard = () => {
           filterValue: filter,
           filterField: field,
         }));
-      }, 500),
+      }, 300),
     []
   );
 
