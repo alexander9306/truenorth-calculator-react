@@ -20,17 +20,25 @@ import { CollectionResponse } from '../../interfaces/collections-response.interf
 
 const validationSchema = yup.object({
   type: yup.string().required('Type is required'),
-  num1: yup.number().when('type', {
-    is: (type: string) => type !== 'random_string',
-    then: () => yup.number().required('Num1 is required'),
-    otherwise: () => yup.number().notRequired(),
-  }),
-  num2: yup.number().when('type', {
-    is: (type: string) =>
-      type !== 'random_string' && type !== 'square_root',
-    then: () => yup.number().required('Num2 is required'),
-    otherwise: () => yup.number().notRequired(),
-  }),
+  num1: yup
+    .number()
+    .max(Number.MAX_SAFE_INTEGER, 'Number is too big')
+    .min(Number.MIN_SAFE_INTEGER, 'Number is too small')
+    .required('Num1 is required')
+    .when('type', {
+      is: (type: string) => type === 'random_string',
+      then: () => yup.number().notRequired(),
+    }),
+  num2: yup
+    .number()
+    .max(Number.MAX_SAFE_INTEGER, 'Number is too big')
+    .min(Number.MIN_SAFE_INTEGER, 'Number is too small')
+    .required('Num2 is required')
+    .when('type', {
+      is: (type: string) =>
+        type === 'random_string' || type === 'square_root',
+      then: () => yup.number().notRequired(),
+    }),
 });
 
 interface OperationFormProps {
