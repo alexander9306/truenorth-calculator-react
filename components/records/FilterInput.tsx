@@ -27,17 +27,20 @@ const FilterInput = ({
     setFilter(value);
     handleFilterChange(value, column);
   };
+
+  const clearValues = () => {
+    setFilter('');
+    handleFilterChange('', column);
+  };
+
   const handleColumnChange = (e: any) => {
     const value = e.target.value;
     setColumn(value);
 
-    if (value === 'date') setFilter('');
+    if (value === 'date') clearValues();
   };
 
-  const handleClearClick = () => {
-    setFilter('');
-    handleFilterChange('', column);
-  };
+  const handleClearClick = () => clearValues();
 
   const handleDateChange = (date: any) =>
     handleFilterChange(date.toString(), column);
