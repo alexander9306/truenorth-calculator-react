@@ -1,3 +1,5 @@
+import { signOut } from 'next-auth/react';
+
 export type FetcherProps = {
   url: string;
   method?: 'POST' | 'GET' | 'PUT' | 'PATCH' | 'DELETE';
@@ -28,6 +30,10 @@ export const fetcher = async (req: FetcherProps) => {
   const res = await fetch(url, fetchOptions);
 
   if (!res.ok) {
+    //Sign out on unauthorized POST
+    if (res.status === 401 && fetchOptions.method === 'POST')
+      return signOut();
+
     const reason = await res.json();
     const error: any = new Error(reason.message);
 

@@ -25,41 +25,14 @@ export const useSWRFetch = <T = unknown>(
         revalidate,
         { retryCount }
       ) => {
-        // Never retry on Insufficient Balance Error
-        if (
-          error.message ===
-          'Insufficient balance to perform this operation'
-        ) {
-          return;
-        }
+        // Sign out after 2 retries of 401
+        if (error.status === 401 && retryCount >= 2) return signOut();
 
-        switch (error.status) {
-          case 401:
-            if (retryCount >= 3) return signOut();
-            break;
-          // Never retry on these error codes
-          case 404:
-          case 400:
-          case 409:
-          case 469:
-            return;
-
-          default:
-            break;
-        }
-
-        if (
-          (key as any)?.url === '/v1/operations' &&
-          error.status !== 401
-        )
-          return;
-
-        if (retryCount >= 5)
-          // Only retry up to 5 times to avoid being Throttle.
-          return;
+        // Only retry up to 6 times to avoid being Throttle.
+        if (retryCount >= 6) return;
 
         // Retry after 5 seconds.
-        setTimeout(() => revalidate({ retryCount }), 5000);
+        setTimeout(() => revalidate({ retryCount }), 4000);
       },
     }
   );
