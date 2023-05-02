@@ -83,7 +83,6 @@ const RecordsTable = (props: RecordsTableProps) => {
         aria-label="table"
         sx={{
           whiteSpace: 'nowrap',
-          mt: 2,
         }}
       >
         <TableHead>
@@ -209,7 +208,7 @@ const RecordsTable = (props: RecordsTableProps) => {
         sx={{
           position: 'absolute',
           right: '0',
-          bottom: '20px',
+          bottom: '30px',
         }}
       >
         <CustomPaginationButtons

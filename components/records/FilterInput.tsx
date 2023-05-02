@@ -37,11 +37,23 @@ const FilterInput = ({
     const value = e.target.value;
     setColumn(value);
 
-    if (value === 'date' || column === 'date') {
+    // Clear values when selecting or unselecting these columns
+    const shouldClearValues = [value, column].some(
+      (v) => v === 'date' || v === 'status'
+    );
+
+    if (shouldClearValues) {
       clearValues();
     } else {
       handleFilterChange(filter, value);
     }
+  };
+
+  const handleStateChange = (e: any) => {
+    const value = e.target.value;
+    setFilter(value);
+
+    handleFilterChange(value, column);
   };
 
   const handleClearClick = () => clearValues();
@@ -60,7 +72,7 @@ const FilterInput = ({
         {column === 'date' && (
           <DatePicker label="Date" onChange={handleDateChange} />
         )}
-        {column !== 'date' && (
+        {column !== 'date' && column !== 'status' && (
           <CustomTextField
             variant="outlined"
             label="Filter"
@@ -69,7 +81,9 @@ const FilterInput = ({
             InputProps={{
               endAdornment: (
                 <IconButton
-                  sx={{ visibility: filter ? 'visible' : 'hidden' }}
+                  sx={{
+                    visibility: filter ? 'visible' : 'hidden',
+                  }}
                   onClick={handleClearClick}
                 >
                   <ClearIcon />
@@ -78,12 +92,28 @@ const FilterInput = ({
             }}
           />
         )}
+        {column === 'status' && (
+          <FormControl sx={{ width: '180px' }}>
+            <InputLabel id="status-select-label">Status</InputLabel>
+            <Select
+              labelId="status-select-label"
+              id="status-select"
+              label="Status"
+              size="medium"
+              value={filter}
+              onChange={handleStateChange}
+            >
+              <MenuItem value="active">Active</MenuItem>
+              <MenuItem value="inactive">Inactive</MenuItem>
+            </Select>
+          </FormControl>
+        )}
       </FormControl>
 
       <FormControl sx={{ width: '180px' }}>
-        <InputLabel id="demo-simple-select-label">Column</InputLabel>
+        <InputLabel id="column-select-label">Column</InputLabel>
         <Select
-          labelId="demo-simple-select-label"
+          labelId="column-select-label"
           id="demo-simple-select"
           label="Column"
           size="medium"
