@@ -42,7 +42,13 @@ const AuthLogin = ({ title, subtitle, subtext }: AuthLoginProps) => {
       });
 
       if (res?.ok) {
-        await router.push('/');
+        const { callbackUrl } = router.query;
+
+        if (typeof callbackUrl === 'string') {
+          return window?.location.assign(callbackUrl);
+        }
+
+        return router.push('/');
       } else {
         setApiError(res?.error);
       }
