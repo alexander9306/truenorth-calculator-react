@@ -42,7 +42,7 @@ const FilterInput = ({
       (v) => v === 'date' || v === 'status'
     );
 
-    if (shouldClearValues) {
+    if (shouldClearValues || !filter) {
       clearValues();
     } else {
       handleFilterChange(filter, value);
