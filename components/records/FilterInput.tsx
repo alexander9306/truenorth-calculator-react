@@ -30,7 +30,7 @@ const FilterInput = ({
 
   const clearValues = () => {
     setFilter('');
-    handleFilterChange('', column);
+    handleFilterChange('', tableHeaders[0].id);
   };
 
   const handleColumnChange = (e: any) => {
@@ -42,11 +42,11 @@ const FilterInput = ({
       (v) => v === 'date' || v === 'status'
     );
 
-    if (shouldClearValues || !filter) {
-      clearValues();
-    } else {
-      handleFilterChange(filter, value);
-    }
+    if (shouldClearValues) return clearValues();
+
+    if (!filter) return;
+
+    handleFilterChange(filter, value);
   };
 
   const handleStateChange = (e: any) => {
