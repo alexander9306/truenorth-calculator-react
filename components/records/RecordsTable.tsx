@@ -16,6 +16,7 @@ import { useSWRFetch } from '../../lib/useFetch';
 import CustomPaginationButtons from '../theme-elements/CustomPagination';
 import LoadingTable from '../operations/LoadingTable';
 import { useEffect, useState } from 'react';
+import { Balance } from '@/interfaces/balance.interface';
 
 interface RecordsTableProps {
   tableHeaders: { name: string; id: string; sort?: boolean }[];
@@ -43,31 +44,43 @@ const RecordsTable = (props: RecordsTableProps) => {
   const {
     data: records,
     isLoading,
-    mutate,
+    mutate: mutateRecords,
   } = useSWRFetch<CollectionResponse<Record>>(url);
-  -(
-    // Mimic a loading effect
-    useEffect(() => {
-      setLoadTable(true);
-      const id = setTimeout(() => {
-        setLoadTable(false);
-      }, 1000);
 
-      return () => clearTimeout(id);
-    }, [isLoading])
+  // Mimic a loading effect
+  useEffect(() => {
+    setLoadTable(true);
+    const id = setTimeout(() => {
+      setLoadTable(false);
+    }, 1000);
+
+    return () => clearTimeout(id);
+  }, [isLoading]);
+
+  const { mutate: mutateBalance } = useSWRFetch<Balance>(
+    '/v1/operations/balance'
   );
 
-  const onDeleteClick = async (id: number) => {
-    await props.handleDeleteClick(id);
-    if (records)
-      mutate({
+  const onDeleteClick = async (record: Record) => {
+    await props.handleDeleteClick(record.id);
+
+    if (records) {
+      mutateRecords({
         ...records,
-        data: records?.data.map((record) =>
-          record.id === id
-            ? { ...record, status: 'inactive' }
-            : record
+        data: records?.data.map((v) =>
+          v.id === record.id ? { ...v, status: 'inactive' } : v
         ),
       });
+
+      //Update the balance cache on record delete
+      mutateBalance(
+        (balance) =>
+          balance && {
+            ...balance,
+            currentBalance: balance?.currentBalance + record.amount,
+          }
+      );
+    }
   };
 
   return (
@@ -193,7 +206,7 @@ const RecordsTable = (props: RecordsTableProps) => {
                     color="error"
                     variant="outlined"
                     size="small"
-                    onClick={() => onDeleteClick(record.id)}
+                    onClick={() => onDeleteClick(record)}
                   >
                     Delete
                   </Button>
