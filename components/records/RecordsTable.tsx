@@ -51,8 +51,8 @@ const RecordsTable = (props: RecordsTableProps) => {
   useEffect(() => {
     setLoadTable(true);
     const id = setTimeout(() => {
-      setLoadTable(false);
-    }, 1000);
+      if (!isLoading) setLoadTable(false);
+    }, 700);
 
     return () => clearTimeout(id);
   }, [isLoading]);
