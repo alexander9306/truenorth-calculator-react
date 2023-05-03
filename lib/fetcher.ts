@@ -30,9 +30,8 @@ export const fetcher = async (req: FetcherProps) => {
   const res = await fetch(url, fetchOptions);
 
   if (!res.ok) {
-    //Sign out on unauthorized POST
-    if (res.status === 401 && fetchOptions.method === 'POST')
-      return signOut();
+    //Sign out if on 401 with access token
+    if (res.status === 401 && req.accessToken) return signOut();
 
     const reason = await res.json();
     const error: any = new Error(reason.message);

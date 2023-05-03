@@ -1,7 +1,6 @@
 import useSWR from 'swr';
-import { signOut, useSession } from 'next-auth/react';
+import { useSession } from 'next-auth/react';
 import { FetcherProps, fetcher } from './fetcher';
-import { useEffect } from 'react';
 
 export const useSWRFetch = <T = unknown>(
   req: FetcherProps | string | null
@@ -25,9 +24,6 @@ export const useSWRFetch = <T = unknown>(
         revalidate,
         { retryCount }
       ) => {
-        // Sign out after 2 retries of 401
-        if (error.status === 401 && retryCount >= 2) return signOut();
-
         // Only retry up to 6 times to avoid being Throttle.
         if (retryCount >= 6) return;
 
