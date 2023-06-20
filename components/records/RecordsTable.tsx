@@ -49,7 +49,8 @@ const RecordsTable = (props: RecordsTableProps) => {
 
   // Mimic a loading effect
   useEffect(() => {
-    setLoadTable(true);
+    if (!records?.length) setLoadTable(true);
+    
     const id = setTimeout(() => {
       if (!isLoading) setLoadTable(false);
     }, 700);
